@@ -4,9 +4,98 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
     <title>Document</title>
 </head>
 <body>
+
+    <header>
+        <div class="jumbotron jumbotron-fluid py-2">
+            <div class="container">
+              <h1 class="display-4">Weather Dashboard</h1>
+              <p class="lead my-2">Search for a city to display its weather for the next 5 days.</p>
+              <p id="date"></p>
+            </div>
+          </div>
+    </header>
+
+    <aside>
+        <form>
+            <div class="form-group" id="submissionForm">
+              <label for="cityTextInput" id="searchLabel">Search for a City:</label>
+              <input type="text" class="form-control" id="searchBar" placeholder="i.e. San Diego">
+            </div>
+            <button type="submit" class="btn btn-primary" id="searchButton">Submit</button>
+          </form>
+          <hr />
+          <div id="searchHistory">
+              <p>Search History Placeholder</p>
+          </div>
+    </aside>
+
+    <main>
+        <div id="todayForecast">
+            <h3 id="cityEl">Today's Forecast</h3>
+            <p id="tempEl">Temp: </p>
+            <p id="elwind">Wind: </p>
+            <p id="humidityEl">Humidity: </p>
+            <p id="uvEl">UV Index: </p>
+        </div>
+        <br />
+        <br />
+        <div id="fiveDay">
+            <h5>5-Day Forecast</h5>
+            <p class="futureDay">Day 1</p>
+            <p class="futureDay">Day 2</p>
+            <p class="futureDay">Day 3</p>
+            <p class="futureDay">Day 4</p>
+            <p class="futureDay">Day 5</p>
+        </div>
+    </main>
+
+    <!-- <div class="container-fluid">
+        <div class="row">
+            <div class="input-groupcol-12 col-xl-2" id="sidebar">
+                <div class="form-outline">
+                    <label class="form-label" for="form1" id="searchButton">Search for a City:</label>
+                    <input type="search" id="form1" class="form-control" />
+                </div>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xl-2">
+                <p>History</p>
+            </div>
+            <div class="col-12 col-xl-2">
+                <p>Placeholder 1</p>
+            </div>
+            <div class="col-12 col-xl-2">
+                <p>Placeholder 2</p>
+            </div>
+            <div class="col-12 col-xl-2">
+                <p>Placeholder 3</p>
+            </div>
+            <div class="col-12 col-xl-2">
+                <p>Placeholder 4</p>
+            </div>
+            <div class="col-12 col-xl-2">
+                <p>Placeholder 5</p>
+            </div>
+            </main>
+    </div> -->
     
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+
 </body>
 </html>
