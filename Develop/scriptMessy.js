@@ -14,7 +14,6 @@ var histList = document.getElementById('searchHistory');
 var longTerm = document.getElementById('longTerm');
 var searchText = document.getElementById('searchBar');
 
-var requestStatus = "";
 var maxDays = 5;
 var maxCities = 10;
 var unitVar = "imperial";
@@ -37,52 +36,82 @@ function logSubmit(event) {
     if (!searchText.value) {
         alert("Please enter a city.")
     } else {
-        cityName = document.getElementById('searchBar').value;
-        runWeather();
+
+        var cityEntry = document.getElementById('searchBar').value;
+        cityName = cityEntry;
+        var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unitVar + "&appid=" + apiKey;
+        var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + unitVar + "&cnt=" + maxDays + "&appid=" + apiKey;
+        fetch(requestUrl)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(function (data) {
+            if(!(data === undefined)) {
+                console.log(data);
+                if (cities.includes(cityName) == 0) {
+                cities.push(cityEntry);
+            };
+            localStorage.setItem("cityStorage", JSON.stringify(cities));
+            populate();
+            runWeather();
+            fetch(forecastUrl)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject();
+                }
+            })
+            .then(function (data) {
+                nDays=data.list;
+                displayForecast();
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            } else {
+                // TODO: Fill entry in alert.
+                alert("City not found.")
+            }
+        })
     }
 };
 
+// I think this can be done in fewer steps if we set a variable for the function and pass that when the function is called. This works fine; just something to think about.
 function runWeather() {
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unitVar + "&appid=" + apiKey;
     var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + unitVar + "&cnt=" + maxDays + "&appid=" + apiKey;
     fetch(requestUrl)
     .then(function (response) {
         if (response.ok) {
-            requestStatus="good";
+            console.log("OK");
             return response.json();
-            } else {
-            requestStatus="bad";
-            }
         }
-    )
+    })
     .then(function (data) {
-        if(requestStatus === "good") {
-            console.log(data);
-            nowWeather=data;
-            // Wrapped these functions inside the promise so that they don't fire until the data is returned.
-            appendHistory();
-            displayWeather();
-            fetch(forecastUrl)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                nDays=data.list;
-                displayForecast();
-                populate();
-            })
-        } else {
-            alert(`${cityName} not found.`);
-        }
+        console.log(data);
+        nowWeather=data;
+        // Wrapped these functions inside the promise so that they don't fire until the data is returned.
+        displayWeather();
     });
+    fetch(forecastUrl)
+    .then(function (response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return Promise.reject();
+        }
+    })
+    .then(function (data) {
+        nDays=data.list;
+        displayForecast();
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
 };
-
-function appendHistory() {
-    if (!(cities.includes(cityName))) {
-        cities.push(cityName);
-    };
-    localStorage.setItem("cityStorage", JSON.stringify(cities));
-}
 
 // function(location) {
     // var {lat} = location
@@ -112,7 +141,6 @@ function displayWeather() {
 // Haven't made this repopulate when re-entered.
 
 function displayForecast() {
-    longTerm.innerHTML="";
     for (var i = 0; i < nDays.length; i++) {
         dayForecast[i] = nDays[i];
         var forecastBlock = document.createElement("div");
