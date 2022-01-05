@@ -32,16 +32,17 @@
             </div>
             <button type="submit" class="btn btn-primary" id="searchButton">Submit</button>
           </form>
+          <!-- This hard-coded St. Paul button is just here to demonstrate the intended functionality of the buttons, which for some reason don't work with buttons that are added iteratively. -->
           <button class="cityButton">St. Paul</button>
           <hr />
           <div id="searchHistory">
-              <!-- Populated from populate(). -->
+              <!-- Populated from JavaScript. -->
           </div>
     </aside>
 
     <main>
+        <h3 id="cityEl">Today's Forecast</h3>
         <div id="todayForecast">
-            <h3 id="cityEl">Today's Forecast</h3>
             <img id="todayImg">
             <p id="tempEl">Temp: </p>
             <p id="elwind">Wind: </p>
@@ -50,44 +51,11 @@
         </div>
         <br />
         <br />
+        <h4>5-Day Forecast</h4>
         <div id="longTerm">
-            <h5>5-Day Forecast</h5>
+            <!-- Populated from JavaScript -->
         </div>
     </main>
-
-    <!-- <div class="container-fluid">
-        <div class="row">
-            <div class="input-groupcol-12 col-xl-2" id="sidebar">
-                <div class="form-outline">
-                    <label class="form-label" for="form1" id="searchButton">Search for a City:</label>
-                    <input type="search" id="form1" class="form-control" />
-                </div>
-                <button type="button" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-xl-2">
-                <p>History</p>
-            </div>
-            <div class="col-12 col-xl-2">
-                <p>Placeholder 1</p>
-            </div>
-            <div class="col-12 col-xl-2">
-                <p>Placeholder 2</p>
-            </div>
-            <div class="col-12 col-xl-2">
-                <p>Placeholder 3</p>
-            </div>
-            <div class="col-12 col-xl-2">
-                <p>Placeholder 4</p>
-            </div>
-            <div class="col-12 col-xl-2">
-                <p>Placeholder 5</p>
-            </div>
-            </main>
-    </div> -->
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>

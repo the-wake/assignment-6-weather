@@ -15,15 +15,13 @@ var searchText = $('#searchBar');
 
 var requestStatus = "";
 var maxDays = 5;
-var maxCities = 10;
+// var maxCities = 10;
 var unitVar = "imperial";
 var scaleVar = "°F"
 var cities = [];
 var nowWeather = {};
 var dayForecast = {};
 var forecastDays = {};
-
-// Could set something to make this happen only if cityName exists.
 
 function setDay() {
     var dateVar = moment().format("dddd, MMMM DD, YYYY");
