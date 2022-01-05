@@ -2,12 +2,14 @@
 
 Welcome to the [Weather Dashboard project](./index.html)! Here you can search for a city to see its current weather, as well as a five-day forecast.
 
+***
+
 ## Features
 
 ![Here is a screenshot of the interface and functionality.](./assets/images/interface.png)
 
 ### City Lookup
-You can query any city in the world to see its weather. Hypothetically, you'd also be able to click items from your history to search for that city again, but that feature is kicking my ass right now and defeated my entire study group and BCS help tutor. (It works fine for buttons that are hard-coded, but that's not terribly helpful for us.)
+You can query any city in the world to see its weather. Assuming the query is successful, it will clear the search bar and add the queried city to a list of searches (then stored in local storage).
 
 ### Weather Data
 Each query will return two sets of information: current conditions, and a 5-day forecast.
@@ -18,6 +20,8 @@ Each query will return two sets of information: current conditions, and a 5-day 
 * UV index.
 
 UV Index will also display with a color block to indicate low, moderate, or high levels of risk.
+
+***
 
 ## Under the Hood
 

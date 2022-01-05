@@ -10,11 +10,10 @@ var todayHumid = $('#humidEl');
 var todayUv = $('#uvEl');
 var histList = $('#searchHistory');
 var histItem = $(".cityButton");
-// var histItem = document.getElementsByClassName("cityButton");
 var longTerm = $('#longTerm');
 var searchText = $('#searchBar');
 
-// The requestStatus variable is here to validate 
+// The requestStatus variable is here to validate whether the fetch request was successful, and interrupt some functions if not.
 var requestStatus = "";
 var maxDays = 5;
 // var maxCities = 10;
@@ -145,10 +144,10 @@ function populate() {
     var cityPop = JSON.parse(localStorage.getItem("cityStorage"));
     for (var i = 0; i < cityPop.length; i++) {
         cities[i] = cityPop[i];
-        var genButton = $('<button>');
-        genButton.addClass('cityButton');
-        genButton.text(cities[i]);
+        var genButton = $('<button>').addClass('cityButton').text(cities[i]);
         histList.append(genButton);
+        // I tried re-definine the histItem variable here just to make sure that that variable was up-to-date when called by the histItem event listener. It didn't seem to help so I've commented it out.
+        // histItem = $(".cityButton");
     };
 };
 
@@ -163,14 +162,8 @@ form.on('submit', function(event) {
     }
 });
 
-// This is just here because I've been a/b testing using vanilla JavaScript vs. jQuery on this event listener to try to get it working.
-// histItem.addEventListener("click", function(event) {
-//     cityName = event.target.innerText;
-//     runWeather();
-// });
-
-// This is the one that just won't run on the iteratively-generated button elements no matter what we try.
-histItem.on('click', function(event) {
+// This is the one that was causing me all the trouble. Finally found out about tying events to static ancestors after like 7 hours of troubleshooting.
+histList.on('click', '.cityButton', function(event) {
     cityName = event.target.innerText;
     runWeather();
 });
