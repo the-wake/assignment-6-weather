@@ -91,7 +91,16 @@ function displayWeather() {
     todayTemp.text("Temp: " + nowWeather.main.temp + " " + scaleVar);
     todayWind.text("Wind: " + nowWeather.wind.speed + " mph");
     todayHumid.text("Humidity: " + nowWeather.main.humidity + "%");
-    todayUv.text("UV Index: " + forecastDays.daily[0].uvi);
+    var uvString = $('<span>').addClass('forecastEl uvIndex').text(forecastDays.daily[0].uvi);
+    todayUv.addClass('uvIndex').text("UV Index: ");
+    if (forecastDays.daily[0].uvi <= 3 ) {
+        uvString.addClass('lowThreat')
+    } else if (forecastDays.daily[0].uvi <= 7 ) {
+        uvString.addClass('moderateThreat')
+    } else {
+        uvString.addClass('highThreat')
+    }
+    todayUv.append(uvString);
 };
 
 function displayForecast() {
@@ -108,7 +117,16 @@ function displayForecast() {
         var forecastTemp = $('<p>').addClass('forecastEl').text(`High Temp: ${dayForecast[i].temp.max} ${scaleVar}`);
         var forecastWind = $('<p>').addClass('forecastEl').text(`Wind: ${dayForecast[i].wind_speed} MPH`);
         var forecastHumid = $('<p>').addClass('forecastEl').text(`Humidity: ${dayForecast[i].humidity}%`);
-        var forecastUv = $('<p>').addClass('<forecastEl>').text(`UV Index: ${dayForecast[i].uvi}`);
+        var uvString = $('<span>').addClass('forecastEl uvIndex').text(dayForecast[i].uvi);
+        var forecastUv = $('<p>').addClass('forecastEl').text("UV Index: ");
+        if (dayForecast[i].uvi <= 3 ) {
+            uvString.addClass('lowThreat')
+        } else if (dayForecast[i].uvi <= 7 ) {
+            uvString.addClass('moderateThreat')
+        } else {
+            uvString.addClass('highThreat')
+        }
+        forecastUv.append(uvString);
         forecastBlock.append(forecastDay);
         forecastBlock.append(forecastPicture);
         forecastBlock.append(forecastTemp);

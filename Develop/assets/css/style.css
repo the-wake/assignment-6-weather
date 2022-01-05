@@ -35,14 +35,35 @@ button {
     padding: 9px;
 }
 
-#fiveDay {
+#longTerm {
     width: 100%;
 }
 
-.futureDay {
+.forecastBlock {
     display: inline-block;
     background: whitesmoke;
     margin: 10px;
     width: 18%;
-    height: 100px;
+}
+
+.uvIndex {
+    padding: 5px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 4px;
+}
+
+.lowThreat {
+    /* 0-3 */
+    background-color: rgb(27, 192, 27);
+}
+
+.moderateThreat {
+    /* 4-7 */
+    background-color: rgb(251, 178, 41);
+}
+
+.highThreat {
+    /* 8+ */
+    background-color: red;
 }
