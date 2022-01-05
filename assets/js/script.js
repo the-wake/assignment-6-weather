@@ -10,6 +10,7 @@ var todayHumid = $('#humidEl');
 var todayUv = $('#uvEl');
 var histList = $('#searchHistory');
 var histItem = $(".cityButton");
+// var histItem = document.getElementsByClassName("cityButton");
 var longTerm = $('#longTerm');
 var searchText = $('#searchBar');
 
@@ -135,45 +136,12 @@ function displayForecast() {
     }
 };
 
-// function displayForecast() {
-//     longTerm.empty();
-//     for (var i = 0; i < maxDays; i++) {
-//         dayForecast[i] = forecastDays.daily[i];
-//         var forecastBlock = document.createElement("div");
-//         forecastBlock.className="forecastBlock";
-//         var forecastDay = document.createElement("h6");
-//         forecastDay.className="forecastEl";
-//         var rawDate = forecastDay.textContent=dayForecast[i].dt;
-//         var readableDate = moment.unix(rawDate).format("MMMM Do, YYYY");
-//         forecastDay.textContent=readableDate;
-//         var forecastTemp = document.createElement("p");
-//         forecastTemp.className="forecastEl";
-//         forecastTemp.textContent=dayForecast[i].temp.max;
-//         var forecastWind = document.createElement("p");
-//         forecastWind.className="forecastEl";
-//         forecastWind.textContent=dayForecast[i].wind_speed;
-//         var forecastHumid = document.createElement("p");
-//         forecastHumid.className="forecastEl";
-//         forecastHumid.textContent=dayForecast[i].humidity;
-//         var forecastUv = document.createElement("p");
-//         forecastUv.className="forecastEl";
-//         forecastUv.textContent=dayForecast[i].main;
-//         forecastBlock.append(forecastDay);
-//         forecastBlock.append(forecastTemp);
-//         forecastBlock.append(forecastWind);
-//         forecastBlock.append(forecastHumid);
-//         forecastBlock.append(forecastUv);
-//         longTerm.append(forecastBlock);
-//     }
-// };
-
 function populate() {
     // Clears the list before populating it again.
     histList.html("");
     var cityPop = JSON.parse(localStorage.getItem("cityStorage"));
     for (var i = 0; i < cityPop.length; i++) {
         cities[i] = cityPop[i];
-        // Put in a function to snip the cities array to the right size, to check for duplicates, and to validate entry. Can probably use if (response.status === 404) or response.ok to help with that.
         var genButton = $('<button>');
         genButton.addClass('cityButton');
         genButton.text(cities[i]);
@@ -191,15 +159,15 @@ form.on('submit', function(event) {
     }
 });
 
+// histItem.addEventListener("click", function(event) {
+//     cityName = event.target.innerText;
+//     runWeather();
+// });
+
 histItem.on('click', function(event) {
-    // if (event.target.attr('button')) {
     cityName = event.target.innerText;
     runWeather();
-    // };
 });
 
 setDay();
 populate();
-
-
-// Do loop with if length > max length, then i = array.length-1 and i-- 10 times.
