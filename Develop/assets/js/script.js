@@ -32,7 +32,6 @@ function setDay() {
 
 function runWeather() {
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unitVar + "&appid=" + apiKey;
-    // var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + unitVar + "&cnt=" + maxDays + "&appid=" + apiKey;
     searchText.val("");
     fetch(requestUrl)
     .then(function (response) {
@@ -50,16 +49,16 @@ function runWeather() {
             nowWeather=data;
             // Wrapped these functions inside the promise so that they don't fire until the data is returned.
             appendHistory();
-            displayWeather();
             var latVar = nowWeather.coord.lat;
             var lonVar = nowWeather.coord.lon;
-            var onecallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latVar + "&lon=" + lonVar + "&appid=" + apiKey;
+            var onecallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latVar + "&lon=" + lonVar + "&units=" + unitVar + "&appid=" + apiKey;
             fetch(onecallUrl)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
                 forecastDays=data;
+                displayWeather();
                 displayForecast();
                 populate();
             })
@@ -92,31 +91,26 @@ function displayWeather() {
     todayTemp.text("Temp: " + nowWeather.main.temp + " " + scaleVar);
     todayWind.text("Wind: " + nowWeather.wind.speed + " mph");
     todayHumid.text("Humidity: " + nowWeather.main.humidity + "%");
-    todayUv.text("UV Index: " + nowWeather.main);
+    todayUv.text("UV Index: " + forecastDays.daily[0].uvi);
 };
 
 function displayForecast() {
     longTerm.empty();
-    for (var i = 0; i < maxDays; i++) {
+    for (var i = 1; i < maxDays+1; i++) {
         dayForecast[i] = forecastDays.daily[i];
-        var forecastBlock = document.createElement("div");
-        forecastBlock.className="forecastBlock";
-        var forecastDay = document.createElement("h6");
-        forecastDay.className="forecastEl";
-        forecastDay.textContent=dayForecast[i].dt;
-        var forecastTemp = document.createElement("p");
-        forecastTemp.className="forecastEl";
-        forecastTemp.textContent=dayForecast[i].temp.max;
-        var forecastWind = document.createElement("p");
-        forecastWind.className="forecastEl";
-        forecastWind.textContent=dayForecast[i].wind_speed;
-        var forecastHumid = document.createElement("p");
-        forecastHumid.className="forecastEl";
-        forecastHumid.textContent=dayForecast[i].humidity;
-        var forecastUv = document.createElement("p");
-        forecastUv.className="forecastEl";
-        forecastUv.textContent=dayForecast[i].main;
+        var forecastBlock = $('<div>').addClass('forecastBlock');
+        var forecastDay = $('<h6>').addClass('forecastEl');
+        var picVar = dayForecast[i].weather[0].icon;
+        var forecastPicture = $(`<img src="http://openweathermap.org/img/w/${picVar}.png">`);
+        var rawDate = forecastDay.textContent=dayForecast[i].dt;
+        var readableDate = moment.unix(rawDate).format('MMMM Do, YYYY');
+        forecastDay.text(readableDate);
+        var forecastTemp = $('<p>').addClass('forecastEl').text(`High Temp: ${dayForecast[i].temp.max} ${scaleVar}`);
+        var forecastWind = $('<p>').addClass('forecastEl').text(`Wind: ${dayForecast[i].wind_speed} MPH`);
+        var forecastHumid = $('<p>').addClass('forecastEl').text(`Humidity: ${dayForecast[i].humidity}%`);
+        var forecastUv = $('<p>').addClass('<forecastEl>').text(`UV Index: ${dayForecast[i].uvi}`);
         forecastBlock.append(forecastDay);
+        forecastBlock.append(forecastPicture);
         forecastBlock.append(forecastTemp);
         forecastBlock.append(forecastWind);
         forecastBlock.append(forecastHumid);
@@ -124,6 +118,38 @@ function displayForecast() {
         longTerm.append(forecastBlock);
     }
 };
+
+// function displayForecast() {
+//     longTerm.empty();
+//     for (var i = 0; i < maxDays; i++) {
+//         dayForecast[i] = forecastDays.daily[i];
+//         var forecastBlock = document.createElement("div");
+//         forecastBlock.className="forecastBlock";
+//         var forecastDay = document.createElement("h6");
+//         forecastDay.className="forecastEl";
+//         var rawDate = forecastDay.textContent=dayForecast[i].dt;
+//         var readableDate = moment.unix(rawDate).format("MMMM Do, YYYY");
+//         forecastDay.textContent=readableDate;
+//         var forecastTemp = document.createElement("p");
+//         forecastTemp.className="forecastEl";
+//         forecastTemp.textContent=dayForecast[i].temp.max;
+//         var forecastWind = document.createElement("p");
+//         forecastWind.className="forecastEl";
+//         forecastWind.textContent=dayForecast[i].wind_speed;
+//         var forecastHumid = document.createElement("p");
+//         forecastHumid.className="forecastEl";
+//         forecastHumid.textContent=dayForecast[i].humidity;
+//         var forecastUv = document.createElement("p");
+//         forecastUv.className="forecastEl";
+//         forecastUv.textContent=dayForecast[i].main;
+//         forecastBlock.append(forecastDay);
+//         forecastBlock.append(forecastTemp);
+//         forecastBlock.append(forecastWind);
+//         forecastBlock.append(forecastHumid);
+//         forecastBlock.append(forecastUv);
+//         longTerm.append(forecastBlock);
+//     }
+// };
 
 function populate() {
     // Clears the list before populating it again.
