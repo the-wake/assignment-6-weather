@@ -14,6 +14,7 @@ var histItem = $(".cityButton");
 var longTerm = $('#longTerm');
 var searchText = $('#searchBar');
 
+// The requestStatus variable is here to validate 
 var requestStatus = "";
 var maxDays = 5;
 // var maxCities = 10;
@@ -24,6 +25,7 @@ var nowWeather = {};
 var dayForecast = {};
 var forecastDays = {};
 
+// Sets the day in the jumbotron.
 function setDay() {
     var dateVar = moment().format("dddd, MMMM DD, YYYY");
     date.textContent=(dateVar);
@@ -31,9 +33,12 @@ function setDay() {
 
 function runWeather() {
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unitVar + "&appid=" + apiKey;
+    // Zeroes out the previous values before populating.
     searchText.val("");
+    // First fetch request, required to get coordinates for second.
     fetch(requestUrl)
     .then(function (response) {
+        // Makes sure the request is valid; otherwise it interrupts the sequence so we don't end up with junk in the local storage.
         if (response.ok) {
             requestStatus="good";
             return response.json();
@@ -48,6 +53,7 @@ function runWeather() {
             nowWeather=data;
             // Wrapped these functions inside the promise so that they don't fire until the data is returned.
             appendHistory();
+            // Variables store the lat and lon from the initial requiest to concat the new one.
             var latVar = nowWeather.coord.lat;
             var lonVar = nowWeather.coord.lon;
             var onecallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latVar + "&lon=" + lonVar + "&units=" + unitVar + "&appid=" + apiKey;
@@ -67,6 +73,7 @@ function runWeather() {
     });
 };
 
+// This function is called by anything that needs to re-populate the history.
 function appendHistory() {
     if (!(cities.includes(cityName))) {
         cities.push(cityName);
@@ -74,15 +81,7 @@ function appendHistory() {
     localStorage.setItem("cityStorage", JSON.stringify(cities));
 }
 
-// function histClick(event) {
-//     // if (event.target.attr('button')) {
-//         console.log(event.target);
-//         var cityEntry = event.target.innerText;
-//         cityName = cityEntry;
-//         runWeather();
-//     // };
-// };
-
+// This populates pre-existing elements with data from the fetch requests to display current weather conditions.
 function displayWeather() {
     var picture=nowWeather.weather[0].icon;
     forecastHead.text(`Today's Forecast: ${cityName}`);
@@ -92,6 +91,7 @@ function displayWeather() {
     todayHumid.text("Humidity: " + nowWeather.main.humidity + "%");
     var uvString = $('<span>').addClass('forecastEl uvIndex').text(forecastDays.daily[0].uvi);
     todayUv.addClass('uvIndex').text("UV Index: ");
+    // This conditional applies the appropriate class to the UV index.
     if (forecastDays.daily[0].uvi <= 3 ) {
         uvString.addClass('lowThreat')
     } else if (forecastDays.daily[0].uvi <= 7 ) {
@@ -102,6 +102,7 @@ function displayWeather() {
     todayUv.append(uvString);
 };
 
+// This is similar to the above function, but it pulls from the second fetch request to populate the n-day forecast.
 function displayForecast() {
     longTerm.empty();
     for (var i = 1; i < maxDays+1; i++) {
@@ -125,6 +126,7 @@ function displayForecast() {
         } else {
             uvString.addClass('highThreat')
         }
+        // These are here since this script is building new elements from scratch, whereas the above function just modifies existing elements.
         forecastUv.append(uvString);
         forecastBlock.append(forecastDay);
         forecastBlock.append(forecastPicture);
@@ -136,6 +138,7 @@ function displayForecast() {
     }
 };
 
+// This function pulls from local storage to generate the search history buttons.
 function populate() {
     // Clears the list before populating it again.
     histList.html("");
@@ -149,6 +152,7 @@ function populate() {
     };
 };
 
+// This validates to make sure the string isn't empty. If it's not, it passes the search bar text to the cityName variable and runs the fetch request for it.
 form.on('submit', function(event) {
     event.preventDefault();
     if (!searchText.val()) {
@@ -159,15 +163,18 @@ form.on('submit', function(event) {
     }
 });
 
+// This is just here because I've been a/b testing using vanilla JavaScript vs. jQuery on this event listener to try to get it working.
 // histItem.addEventListener("click", function(event) {
 //     cityName = event.target.innerText;
 //     runWeather();
 // });
 
+// This is the one that just won't run on the iteratively-generated button elements no matter what we try.
 histItem.on('click', function(event) {
     cityName = event.target.innerText;
     runWeather();
 });
 
+// These functions set today's date and populate the history from local storage, respectively, when the page loads.
 setDay();
 populate();
